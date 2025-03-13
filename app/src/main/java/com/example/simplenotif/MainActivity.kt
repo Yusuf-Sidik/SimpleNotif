@@ -2,15 +2,15 @@ package com.example.simplenotif
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
-import android.content.Context
+import android.app.PendingIntent
+import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.example.simplenotif.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -47,6 +47,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun sendNotification(title: String, message: String) {
+        //PendingIntent
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://pijar.petik.or.id/"))
+        val pendingIntent = PendingIntent.getActivity(
+            this,
+            0,
+            intent,
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+        )
+
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(title)
@@ -54,6 +63,9 @@ class MainActivity : AppCompatActivity() {
             .setContentText(message)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setSubText(getString(R.string.notification_subtext))
+            //menambahkan intent
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             val channel = NotificationChannel(
