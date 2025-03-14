@@ -34,6 +34,9 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        /*
+        Untuk Android 13 ke atas perlu menambahkan permission
+         */
         if (Build.VERSION.SDK_INT >= 33){
             requestPermissionLauncher.launch(android.Manifest.permission.POST_NOTIFICATIONS)
         }
